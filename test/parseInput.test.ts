@@ -1,4 +1,4 @@
-import { parseInput, Rover } from '../src'
+import { Instruction, parseInput, Rover } from '../src'
 
 test('parseInput test', () => {
   // given
@@ -11,8 +11,14 @@ test('parseInput test', () => {
   expect(result).toEqual({
     mapSize: [5, 5],
     rovers: [
-      { position: { x: 1, y: 2, direction: 'N' }, instructions: 'LMLMLMLMM' } as Rover,
-      { position: { x: 3, y: 3, direction: 'E' }, instructions: 'MMRMMRMRRM' } as Rover,
+      {
+        position: { x: 1, y: 2, direction: 'N' },
+        instructions: [...'LMLMLMLMM'].map((x) => x as Instruction),
+      } as Rover,
+      {
+        position: { x: 3, y: 3, direction: 'E' },
+        instructions: [...'MMRMMRMRRM'].map((x) => x as Instruction),
+      } as Rover,
     ],
   })
 })

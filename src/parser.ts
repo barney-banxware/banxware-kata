@@ -1,4 +1,4 @@
-import { Direction, Position, Rover } from './models'
+import { Direction, Instruction, Position, Rover } from './models'
 
 export function parseInput(input: string): {
   mapSize: [number, number]
@@ -24,15 +24,10 @@ export function parseInput(input: string): {
       direction: startLine[2] as Direction,
     }
 
-    const instructions = lines.shift()
-    if (!instructions) {
-      break
+    const instructions = [...(lines?.shift() || [])].map((x) => x as Instruction)
+    if (instructions.length) {
+      rovers.push({ position, instructions })
     }
-
-    rovers.push({
-      position,
-      instructions,
-    } as Rover)
   }
 
   return { mapSize, rovers }

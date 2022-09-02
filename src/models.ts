@@ -1,4 +1,15 @@
-export type Direction = 'N' | 'S' | 'E' | 'W'
+export enum Direction {
+  N = 'N',
+  S = 'S',
+  E = 'E',
+  W = 'W',
+}
+
+export enum Instruction {
+  M = 'M',
+  L = 'L',
+  R = 'R',
+}
 
 export interface Position {
   x: number
@@ -8,5 +19,5 @@ export interface Position {
 
 export interface Rover {
   position: Position
-  instructions: string
+  instructions: Instruction[]
 }

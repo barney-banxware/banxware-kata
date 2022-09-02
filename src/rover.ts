@@ -1,66 +1,25 @@
-import { Direction, Position, Rover } from './models'
+import { Direction, Instruction, Position, Rover } from './models'
 
-function processMove(position: Position): Position {
-  switch (position.direction) {
-    case 'N':
-      return {
-        ...position,
-        y: position.y + 1,
-      }
+const processMove = (position: Position): Position => movements[position.direction](position)
 
-    case 'S':
-      return {
-        ...position,
-        y: position.y - 1,
-      }
-
-    case 'E':
-      return {
-        ...position,
-        x: position.x + 1,
-      }
-
-    case 'W':
-      return {
-        ...position,
-        x: position.x - 1,
-      }
-  }
+const movements = {
+  N: (position: Position) => ({ ...position, y: position.y + 1 }),
+  S: (position: Position) => ({ ...position, y: position.y - 1 }),
+  E: (position: Position) => ({ ...position, x: position.x + 1 }),
+  W: (position: Position) => ({ ...position, x: position.x - 1 }),
 }
 
-function turnLeft(current: Direction): Direction {
-  switch (current) {
-    case 'N':
-      return 'W'
+const leftTurns: { [key in Direction]: Direction } = { N: Direction.W, S: Direction.E, E: Direction.N, W: Direction.S }
+const turnLeft = (current: Direction): Direction => leftTurns[current]
 
-    case 'S':
-      return 'E'
+const rightTurns: { [key in Direction]: Direction } = { N: Direction.E, S: Direction.W, E: Direction.S, W: Direction.N }
+const turnRight = (current: Direction): Direction => rightTurns[current]
 
-    case 'E':
-      return 'N'
-
-    case 'W':
-      return 'S'
-  }
-}
-
-function turnRight(current: Direction): Direction {
-  switch (current) {
-    case 'N':
-      return 'E'
-
-    case 'S':
-      return 'W'
-
-    case 'E':
-      return 'S'
-
-    case 'W':
-      return 'N'
-  }
-}
-
-export function processSingleInstruction(start: Position, mapSize: [number, number], instruction: string): Position {
+export function processSingleInstruction(
+  start: Position,
+  mapSize: [number, number],
+  instruction: Instruction,
+): Position {
   switch (instruction) {
     case 'L':
       return {
