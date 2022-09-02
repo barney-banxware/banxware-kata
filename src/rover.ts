@@ -15,31 +15,19 @@ const turnLeft = (current: Direction): Direction => leftTurns[current]
 const rightTurns: { [key in Direction]: Direction } = { N: Direction.E, S: Direction.W, E: Direction.S, W: Direction.N }
 const turnRight = (current: Direction): Direction => rightTurns[current]
 
-export function processSingleInstruction(
+const instructionFns = {
+  L: (start: Position) => ({ ...start, direction: turnLeft(start.direction) }),
+  R: (start: Position) => ({ ...start, direction: turnRight(start.direction) }),
+  M: (start: Position) => processMove(start),
+}
+
+export const processSingleInstruction = (
   start: Position,
   mapSize: [number, number],
   instruction: Instruction,
-): Position {
-  switch (instruction) {
-    case 'L':
-      return {
-        ...start,
-        direction: turnLeft(start.direction),
-      }
+): Position => instructionFns[instruction](start)
 
-    case 'R':
-      return {
-        ...start,
-        direction: turnRight(start.direction),
-      }
-
-    case 'M':
-    default:
-      return processMove(start)
-  }
-}
-
-export function processRover(rover: Rover, mapSize: [number, number]): Position {
+export const processRover = (rover: Rover, mapSize: [number, number]): Position => {
   let position = rover.position
 
   for (const instruction of rover.instructions) {
